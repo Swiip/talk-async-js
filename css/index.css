@@ -1,0 +1,64 @@
+html .reveal .slides {
+  margin: auto auto auto 0;
+}
+
+html .reveal h1,
+html .reveal h2,
+html .reveal h3,
+html .reveal h4,
+html .reveal h5,
+html .reveal h6 {
+  text-transform: none;
+  font-family: 'Open Sans', Helvetica, sans-serif;
+  font-weight: normal;
+}
+
+html .reveal .title h1,
+html .reveal .title h2,
+html .reveal .title h3,
+html .reveal .title h4,
+html .reveal .title h5,
+html .reveal .title h6 {
+  color: white;
+}
+
+html .reveal .title h1 {
+  border-bottom: 3px solid white;
+  margin: 185px 350px auto 100px;
+  padding-bottom: 10px;
+  font-size: 60px;
+  font-weight: normal;
+}
+
+html .reveal .title h2 {
+  margin: 10px 350px auto 100px;
+  font-size: 45px;
+  font-weight: 300;
+}
+
+html .reveal .title h3 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -250px;
+  font-size: 40px;
+  font-weight: 300;
+}
+
+html .reveal h3 .by {
+  font-style: italic;
+}
+
+html .reveal h3 .last {
+  font-weight: bold;
+}
+
+html .reveal caption {
+  font-size: 16px;
+}
+
+html .reveal pre code {
+  line-height: 30px;
+  font-size: 22px;
+  padding: 10px;
+}

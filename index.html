@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Coder l'asynchronisme en JavaScript</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+		<link rel="stylesheet" href="css/index.css">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-background="img/FOND-Présentation.jpg" class="title">
+					<h1>Zenika <strong>Academy</strong></h1>
+					<h2>Coder l'asynchronisme en JavaScript</h2>
+					<h3><span class="by">By</span> Matthieu <span class="last">Lux</span></h3>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Pourquoi l'asynchronisme ?</h2>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>I/O Latency</h2>
+					<table class="center">
+						<tbody>
+							<tr><td>L1</td><td>3 cycles</td></tr>
+							<tr><td>L2</td><td>14 cycles</td></tr>
+							<tr><td>RAM</td><td>250 cycles</td></tr>
+							<tr><td>Disk</td><td>41,000,000</td></tr>
+							<tr><td>Network</td><td>240,000,000</td></tr>
+						</tbody>
+						<caption>Source: Ryan Dahl’s 2008.11.08 node.js presentation</caption>
+					</table>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Les performances de Node sont du à sa gestion de l'asynchronisme</h2>
+					<aside class="notes">
+						- Et pourtant, il est également monothreadé
+						- Ça n'a finalement pas grand chose à voir avec les performances du JavaScript lui même
+						- Ses performances sont du à sa capacité de ne jamais attendre les entrées sorties
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>La problématique existe tout autant côté navigateur avec les requêtes ajax</h2>
+					<aside class="notes">
+						- Si Node est plus soumis à l'utilisation des entrées sorties les nombreuses requêtes ajax côté browser génèrent exactement la même problématique
+						- Si vous faites des websocket, alors là, c'est inévitable.
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Coder asynchrone n'est pas facile</h2>
+					<aside class="notes">
+						- Ce n'est pas transparent, quoi qu'on fasse, ça change la structure du code
+						- Et ça peut vite être le basarre
+						- Qui n'a pas déjà eu des comportements aléatoires en JS, la plupart du temps, cela vient d'un asynchronisme mal controlé
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Le JavaScript dans tout ça ?</h2>
+					<aside class="notes">
+						- Le JavaScript n'est pas le seul langage associé au concept de la gestion d'entrée sortie asynchrone
+						- Son moteur monothreadé rend la chose indispensable
+						- Pour faire simple, c'est celui qui s'y est le plus investi
+						- Il a également une souplesse et un côté fonctionnel qui rend la chose plus facile
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Synchrone</h2>
+					<pre><code data-trim class="javascript">
+const oAuthResponse = syncRequest(oAuthOptions());
+const token = JSON.parse(oAuthResponse.body).access_token;
+
+const searchResponse = syncRequest(searchOptions(token));
+
+const search = JSON.parse(searchResponse.body);
+search.statuses.forEach(status => console.log(status.text));
+					</code></pre>
+					<aside class="notes">
+						- C'est un extrait de code, le code intégral est sur Github
+						- Il s'agit d'une recherche sur l'API Twitter
+						- Il faut gérer l'authentification avant la requête elle même
+						- Le = ici n'est pas anodin mais n'est possible qu'en synchrone
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Simple mais inutilisable et contre performant</h2>
+					<aside class="notes">
+						- Le JavaScript est asynchrone, toute l'appli s'arrête pendant les requêtes
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>On utilise alors les callbacks pour passer à l'asynchrone</h2>
+					<aside class="notes">
+						- C'est le cas de l'API native de Node encore aujourd'hui
+						- Ainsi que la plupart des implémentations de requête ajax y compris jQuery
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Callbacks</h2>
+					<pre><code data-trim class="javascript">
+callbackRequest(oAuthOptions(), (error, response, body) => {
+  const token = JSON.parse(body).access_token;
+  callbackRequest(searchOptions(token), (error, response, body) => {
+    const search = JSON.parse(body);
+    search.statuses.forEach(status => console.log(status.text));
+  });
+});
+					</code></pre>
+					<aside class="notes">
+						- Plus valeurs de retour
+						- Rupture dans le sens du lecture du code
+						- A la ligne du bas du code, on a pas la valeur de retour
+						- On voit apparaitre une indentation qui sera rapidement difficile à maîtriser
+						- Cela s'appelle le Callback Hell
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>L'utilisation importante des callbacks crée un code complexe</h2>
+					<aside class="notes">
+						- Et on aime pas les codes complexe
+						- C'est difficile à maintenir et c'est générateur de bug
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Comment avoir du code asynchrone maintenable ?</h2>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Les promesses</h2>
+					<pre><code data-trim class="javascript">
+const promise = someLib.someAsyncMethod();
+
+promise.then(result1 => {
+  return someLib.someOtherAsyncMethod();
+}).then(result2 => {
+  // Executed after someOtherAsyncMethod resolved
+});
+					</code></pre>
+					<aside class="notes">
+						- D'abord sous forme de librairie
+						- Intégrée aujourd'hui à la norme ES6
+						- Un objet JavaScript manipulable mais qui ne représente pas la donnée
+						- On peut ensuite écouter son évènement de succès ou d'échec
+						- Cela permet de s'échanger l'objet en attente sans savoir ce qu'un autre code en fera
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Promesses</h2>
+					<pre><code data-trim class="javascript">
+promiseRequest(oAuthOptions()).then(response => {
+  const token = JSON.parse(response).access_token;
+  return promiseRequest(searchOptions(token));
+}).then(response => {
+  const search = JSON.parse(response);
+  search.statuses.forEach(status => console.log(status.text));
+});
+					</code></pre>
+					<aside class="notes">
+						- C'est grâce au chaînage que le code se simplifie
+						- Plutôt que d'imbrique on retourne la seconde promesse
+						- Cela permet de rester au même niveau d'indentation
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>On peut aller encore plus loin</h2>
+					<aside class="notes">
+						- Mais gardez les promesses dans un coin de votre tête
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Generators</h2>
+					<pre><code data-trim class="javascript">
+function *foo() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+var it = foo();
+console.log( it.next() ); // { value:1, done:false }
+console.log( it.next() ); // { value:2, done:false }
+console.log( it.next() ); // { value:3, done:false }
+console.log( it.next() ); // { value: undefined, done: true }
+					</code></pre>
+					<aside class="notes">
+						- ES6 propose la syntaxe function * avec les yield qu'on appele generator
+						- Contrairement à beaucoup de nouveauté d'ES6, ce n'est pas du sucre syntaxique
+						- C'est une fonction qui ne s'executera pas entierement, elle bloquera sur les yield
+						- Le next qu'on voit en bas permet de relancer l'execution
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h3>Et si on yield une promesse ?</h3>
+					<aside class="notes">
+						- Si on yield une promesse, il faut un code qui attends la fin de la promesse avant de continuer
+						- Ce code est générique et peut être fait une fois pour toute
+						- C'est le cas notamment de la librairie co
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Generators</h2>
+					<pre><code data-trim class="javascript">
+import co from 'co';
+
+co(function *() {
+  const oAuthResponse = yield promiseRequest(oAuthOptions());
+  const token = JSON.parse(oAuthResponse).access_token;
+  const searchResponse = yield promiseRequest(searchOptions(token));
+  const search = JSON.parse(searchResponse);
+  search.statuses.forEach(status => console.log(status.text));
+});
+					</code></pre>
+					<aside class="notes">
+						- On revient à une syntaxe qui totalement linéaire
+						- Attention, c'est toujours asynchrone, ça n'implique pas de changement en terme de perf
+						- Les promesses sont au coeur du mécanisme, ce n'est pas un concept à oublier
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>On peut encore aller plus loin ?</h2>
+					<h3>ES7 incomming</h3>
+					<aside class="notes">
+						- Attention, on passe dans des specs très avancées mais non validée
+						- L'idée est de se dire que quitte à avoir les generateurs pour pouvoir faire de l'asynchrone
+						- Autant répondre au problème jusqu'au bout
+						- Le mécanisme générateur + promesse est intégré dans les async functions
+					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h2>Async</h2>
+					<pre><code data-trim class="javascript">
+async function start() {
+  const oAuthResponse = await promiseRequest(oAuthOptions());
+  const token = JSON.parse(oAuthResponse).access_token;
+  const searchResponse = await promiseRequest(searchOptions(token));
+  const search = JSON.parse(searchResponse);
+  search.statuses.forEach(status => console.log(status.text));
+}
+
+start();
+					</code></pre>
+					<aside class="notes">
+						- On revient à une syntaxe qui totalement linéaire
+						- Attention, c'est toujours asynchrone, ça n'implique pas de changement en terme de perf
+						- Les promesses sont au coeur du mécanisme, ce n'est pas un concept à oublier
+					</aside>
+				</section>
+
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'none', // none/fade/slide/convex/concave/zoom
+				backgroundTransition: 'none',
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
