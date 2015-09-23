@@ -235,7 +235,7 @@ console.log( it.next() ); // { value: undefined, done: true }
 				</section>
 
 				<section data-background="img/FOND-Slide.jpg">
-					<h3>Et si on yield une promesse ?</h3>
+					<h2>Et si on yield une promesse ?</h2>
 					<aside class="notes">
 						- Si on yield une promesse, il faut un code qui attends la fin de la promesse avant de continuer
 						- Ce code est générique et peut être fait une fois pour toute
@@ -264,7 +264,7 @@ co(function *() {
 				</section>
 
 				<section data-background="img/FOND-Slide.jpg">
-					<h2>On peut encore aller plus loin ?</h2>
+					<h2>Peut-on aller encore plus loin&nbsp;?</h2>
 					<h3>ES7 incomming</h3>
 					<aside class="notes">
 						- Attention, on passe dans des specs très avancées mais non validée
@@ -307,8 +307,10 @@ start();
 			// Full list of configuration options available at:
 			// https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
-				controls: true,
-				progress: true,
+				width: 800,
+
+				controls: false,
+				progress: false,
 				history: true,
 				center: true,
 
