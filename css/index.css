@@ -56,8 +56,16 @@ html .reveal caption {
   font-size: 16px;
 }
 
+html .reveal pre {
+  box-shadow: none;
+}
+
 html .reveal pre code {
-  line-height: 30px;
-  font-size: 22px;
+  line-height: 40px;
+  font-size: 24px;
   padding: 10px;
+  background-color: rgba(228, 228, 228, 0.9);
+  color: #3F3F3F;
+  overflow: visible;
+  max-height: 500px;
 }

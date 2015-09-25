@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Coder l'asynchronisme en JavaScript</title>
+		<title>Coder l'asynchrone en JavaScript</title>
 
 		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
 		<meta name="author" content="Hakim El Hattab">
@@ -19,7 +19,8 @@
 		<link rel="stylesheet" href="css/index.css">
 
 		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+		<link rel="stylesheet" href="bower_components/highlightjs/styles/default.css" id="highlight-theme">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -43,15 +44,15 @@
 			<div class="slides">
 				<section data-background="img/FOND-Présentation.jpg" class="title">
 					<h1>Zenika <strong>Academy</strong></h1>
-					<h2>Coder l'asynchronisme en JavaScript</h2>
+					<h2>Coder l'asynchrone en JavaScript</h2>
 					<h3><span class="by">By</span> Matthieu <span class="last">Lux</span></h3>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<!-- <section data-background="img/FOND-Slide.jpg">
 					<h2>Pourquoi l'asynchronisme ?</h2>
-				</section>
+				</section> -->
 
-				<section data-background="img/FOND-Slide.jpg">
+				<!-- <section data-background="img/FOND-Slide.jpg">
 					<h2>I/O Latency</h2>
 					<table class="center">
 						<tbody>
@@ -63,34 +64,34 @@
 						</tbody>
 						<caption>Source: Ryan Dahl’s 2008.11.08 node.js presentation</caption>
 					</table>
-				</section>
+				</section> -->
 
-				<section data-background="img/FOND-Slide.jpg">
+				<!-- <section data-background="img/FOND-Slide.jpg">
 					<h2>Les performances de Node sont du à sa gestion de l'asynchronisme</h2>
 					<aside class="notes">
 						- Et pourtant, il est également monothreadé
 						- Ça n'a finalement pas grand chose à voir avec les performances du JavaScript lui même
 						- Ses performances sont du à sa capacité de ne jamais attendre les entrées sorties
 					</aside>
-				</section>
+				</section> -->
 
-				<section data-background="img/FOND-Slide.jpg">
+				<!-- <section data-background="img/FOND-Slide.jpg">
 					<h2>La problématique existe tout autant côté navigateur avec les requêtes ajax</h2>
 					<aside class="notes">
 						- Si Node est plus soumis à l'utilisation des entrées sorties les nombreuses requêtes ajax côté browser génèrent exactement la même problématique
 						- Si vous faites des websocket, alors là, c'est inévitable.
-				</section>
+				</section> -->
 
 				<section data-background="img/FOND-Slide.jpg">
-					<h2>Coder asynchrone n'est pas facile</h2>
+					<h2>Coder l'asynchrone n'est pas facile</h2>
 					<aside class="notes">
 						- Ce n'est pas transparent, quoi qu'on fasse, ça change la structure du code
-						- Et ça peut vite être le basarre
+						- Et ça peut vite être le bazar
 						- Qui n'a pas déjà eu des comportements aléatoires en JS, la plupart du temps, cela vient d'un asynchronisme mal controlé
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<!-- <section data-background="img/FOND-Slide.jpg">
 					<h2>Le JavaScript dans tout ça ?</h2>
 					<aside class="notes">
 						- Le JavaScript n'est pas le seul langage associé au concept de la gestion d'entrée sortie asynchrone
@@ -98,7 +99,7 @@
 						- Pour faire simple, c'est celui qui s'y est le plus investi
 						- Il a également une souplesse et un côté fonctionnel qui rend la chose plus facile
 					</aside>
-				</section>
+				</section> -->
 
 				<section data-background="img/FOND-Slide.jpg">
 					<h2>Synchrone</h2>
@@ -107,8 +108,8 @@ const oAuthResponse = syncRequest(oAuthOptions());
 const token = JSON.parse(oAuthResponse.body).access_token;
 
 const searchResponse = syncRequest(searchOptions(token));
-
 const search = JSON.parse(searchResponse.body);
+
 search.statuses.forEach(status => console.log(status.text));
 					</code></pre>
 					<aside class="notes">
@@ -168,7 +169,7 @@ callbackRequest(oAuthOptions(), (error, response, body) => {
 
 				<section data-background="img/FOND-Slide.jpg">
 					<h2>Les promesses</h2>
-					<pre><code data-trim class="javascript">
+					<!-- <pre><code data-trim class="javascript">
 const promise = someLib.someAsyncMethod();
 
 promise.then(result1 => {
@@ -176,7 +177,7 @@ promise.then(result1 => {
 }).then(result2 => {
   // Executed after someOtherAsyncMethod resolved
 });
-					</code></pre>
+					</code></pre> -->
 					<aside class="notes">
 						- D'abord sous forme de librairie
 						- Intégrée aujourd'hui à la norme ES6
@@ -206,6 +207,7 @@ promiseRequest(oAuthOptions()).then(response => {
 
 				<section data-background="img/FOND-Slide.jpg">
 					<h2>On peut aller encore plus loin</h2>
+					<h3>ES6 incomming</h3>
 					<aside class="notes">
 						- Mais gardez les promesses dans un coin de votre tête
 					</aside>
@@ -292,6 +294,13 @@ start();
 						- Attention, c'est toujours asynchrone, ça n'implique pas de changement en terme de perf
 						- Les promesses sont au coeur du mécanisme, ce n'est pas un concept à oublier
 					</aside>
+				</section>
+
+				<section data-background="img/FOND-Slide.jpg">
+					<h3>Coder l'asynchrone en JavaScript</h3>
+					<h4>Slides<br><a href="https://swiip.github.com/talk-async-js">swiip.github.com/talk-async-js</a></h4>
+					<h4>Examples<br><a href="https://github.com/Swiip/talk-async-js/tree/master/examples" style="white-space: nowrap;">github.com/Swiip/talk-async-js/tree/master/examples</a></h4>
+					<h4>Matthieu Lux (<a href="https://twitter.com/Swiip">@Swiip</a>)</h4>
 				</section>
 
 
