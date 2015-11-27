@@ -41,17 +41,16 @@
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
-				<section data-background="img/FOND-Présentation.jpg" class="title">
-					<h1>Zenika <strong>Academy</strong></h1>
-					<h2>Coder l'asynchrone en JavaScript</h2>
-					<h3><span class="by">By</span> Matthieu <span class="last">Lux</span></h3>
+				<section data-background="#000000" class="title">
+					<h1>L'<strong>asynchrone</strong> en JavaScript</h1>
+					<h3><a href="https://twitter.com/Swiip"><strong>@Swiip</strong></a></h3>
 				</section>
 
-				<!-- <section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>Pourquoi l'asynchronisme ?</h2>
-				</section> -->
+				</section>
 
-				<!-- <section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>I/O Latency</h2>
 					<table class="center">
 						<tbody>
@@ -63,7 +62,7 @@
 						</tbody>
 						<caption>Source: Ryan Dahl’s 2008.11.08 node.js presentation</caption>
 					</table>
-				</section> -->
+				</section>
 
 				<!-- <section data-background="img/FOND-Slide.jpg">
 					<h2>Les performances de Node sont du à sa gestion de l'asynchronisme</h2>
@@ -81,8 +80,8 @@
 						- Si vous faites des websocket, alors là, c'est inévitable.
 				</section> -->
 
-				<section data-background="img/FOND-Slide.jpg">
-					<h2>Coder l'asynchrone n'est pas facile</h2>
+				<section data-background="#000000">
+					<h2>Coder asynchrone n'est pas facile</h2>
 					<aside class="notes">
 						- Ce n'est pas transparent, quoi qu'on fasse, ça change la structure du code
 						- Et ça peut vite être le bazar
@@ -100,7 +99,7 @@
 					</aside>
 				</section> -->
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>Synchrone</h2>
 					<pre><code data-trim class="javascript">
 const oAuthResponse = syncRequest(oAuthOptions());
@@ -119,14 +118,14 @@ search.statuses.forEach(status => console.log(status.text));
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>Simple mais inutilisable et contre performant</h2>
 					<aside class="notes">
 						- Le JavaScript est asynchrone, toute l'appli s'arrête pendant les requêtes
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>On utilise alors les callbacks pour passer à l'asynchrone</h2>
 					<aside class="notes">
 						- C'est le cas de l'API native de Node encore aujourd'hui
@@ -134,7 +133,7 @@ search.statuses.forEach(status => console.log(status.text));
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>Callbacks</h2>
 					<pre><code data-trim class="javascript">
 callbackRequest(oAuthOptions(), (error, response, body) => {
@@ -154,7 +153,7 @@ callbackRequest(oAuthOptions(), (error, response, body) => {
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>L'utilisation importante des callbacks crée un code complexe</h2>
 					<aside class="notes">
 						- Et on aime pas les codes complexe
@@ -162,13 +161,13 @@ callbackRequest(oAuthOptions(), (error, response, body) => {
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>Comment avoir du code asynchrone maintenable ?</h2>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>Les promesses</h2>
-					<!-- <pre><code data-trim class="javascript">
+					<pre><code data-trim class="javascript">
 const promise = someLib.someAsyncMethod();
 
 promise.then(result1 => {
@@ -176,7 +175,7 @@ promise.then(result1 => {
 }).then(result2 => {
   // Executed after someOtherAsyncMethod resolved
 });
-					</code></pre> -->
+					</code></pre>
 					<aside class="notes">
 						- D'abord sous forme de librairie
 						- Intégrée aujourd'hui à la norme ES6
@@ -186,7 +185,7 @@ promise.then(result1 => {
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>Promesses</h2>
 					<pre><code data-trim class="javascript">
 promiseRequest(oAuthOptions()).then(response => {
@@ -204,7 +203,7 @@ promiseRequest(oAuthOptions()).then(response => {
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>On peut aller encore plus loin</h2>
 					<h3>ES6 incoming</h3>
 					<aside class="notes">
@@ -212,7 +211,7 @@ promiseRequest(oAuthOptions()).then(response => {
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>Generators</h2>
 					<pre><code data-trim class="javascript">
 function *foo() {
@@ -221,7 +220,7 @@ function *foo() {
   yield 3;
 }
 
-var it = foo();
+let it = foo();
 console.log( it.next() ); // { value:1, done:false }
 console.log( it.next() ); // { value:2, done:false }
 console.log( it.next() ); // { value:3, done:false }
@@ -235,8 +234,40 @@ console.log( it.next() ); // { value: undefined, done: true }
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
-					<h2>Et si on yield une promesse ?</h2>
+				<section data-background="#000000">
+					<h2>Generators</h2>
+					<pre><code data-trim class="javascript">
+function *foo() {
+  var x = 1 + (yield 'foo');
+  console.log(x);
+}
+
+let it = foo();
+console.log( it.next() ); // { value:'foo', done:false }
+it.next(1); // 2
+					</code></pre>
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section data-background="#000000">
+					<h2>Generators</h2>
+					<pre><code data-trim class="javascript">
+function *fibonacci() {
+  let [prev, curr] = [0, 1];
+  while(true) {
+    [prev, curr] = [curr, prev + curr];
+    yield curr;
+  }
+}
+					</code></pre>
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section data-background="#000000">
+					<h2>Quel est le rapport avec l'<strong>asynchrone</strong> ?</h2>
+					<h3>Et si on yield une promesse ?</h3>
 					<aside class="notes">
 						- Si on yield une promesse, il faut un code qui attends la fin de la promesse avant de continuer
 						- Ce code est générique et peut être fait une fois pour toute
@@ -244,7 +275,7 @@ console.log( it.next() ); // { value: undefined, done: true }
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>Generators</h2>
 					<pre><code data-trim class="javascript">
 import co from 'co';
@@ -264,7 +295,28 @@ co(function *() {
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
+					<h2>co pseudo code</h2>
+					<pre><code data-trim class="javascript">
+function co(g) {
+  var it = g(), ret;
+  (function iterate(val) {
+    ret = it.next( val );
+    if (!ret.done) {
+      if ("then" in ret.value) {
+        ret.value.then( iterate );
+      } else {
+        setTimeout( function(){ iterate( ret.value ); }, 0 );
+      }
+    }
+  })();
+}
+					</code></pre>
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section data-background="#000000">
 					<h2>Peut-on aller encore plus loin&nbsp;?</h2>
 					<h3>ES7 incoming</h3>
 					<aside class="notes">
@@ -275,7 +327,7 @@ co(function *() {
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h2>Async</h2>
 					<pre><code data-trim class="javascript">
 async function start() {
@@ -295,7 +347,7 @@ start();
 					</aside>
 				</section>
 
-				<section data-background="img/FOND-Slide.jpg">
+				<section data-background="#000000">
 					<h3>Coder l'asynchrone en JavaScript</h3>
 					<h4>Slides<br><a href="https://swiip.github.com/talk-async-js">swiip.github.com/talk-async-js</a></h4>
 					<h4>Examples<br><a href="https://github.com/Swiip/talk-async-js/tree/master/examples" style="white-space: nowrap;">github.com/Swiip/talk-async-js/tree/master/examples</a></h4>
